@@ -4,62 +4,225 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sticky Navbar with Autoscroll Carousel and Tailwind CSS</title>
+    <link rel="stylesheet" href="style.css">
     <!-- Include the Tailwind CSS file -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+      a:hover {
+        text-decoration: none;
+      }
+      a[href^="#"] {
+        scroll-behavior: smooth;
+      }
+    </style>
 </head>
-<body class="font-sans">
+<body class="Poppins">
 
-    <!-- Navbar -->
-    <nav class="navbar p-4 flex items-center justify-between sticky top-0 z-10">
-        <div class="text-xl font-bold">Logo</div>
-        <div class="flex space-x-4">
-            <a href="#" class="hover:text-gray-300">Home</a>
-            <a href="#" class="hover:text-gray-300">About</a>
-            <a href="#" class="hover:text-gray-300">Services</a>
-            <a href="#" class="hover:text-gray-300">Contact</a>
-        </div>
-    </nav>
+  <!-- Navbar -->
+  <nav class="sticky top-0 p-4 flex items-center justify-between z-10">
+    <div id="logo" class="text-xl font-bold">Logo</div>
 
-    <!-- Carousel -->
-    <div x-data="{ slide: 0 }">
-        <div x-data="{ scrollPosition: 0 }" x-init="() => { setInterval(() => { scrollPosition += 1; window.scrollTo(0, scrollPosition); }, 100); }"></div>
-        <div class="max-w-screen-lg mx-auto mt-8 relative">
-            <template x-for="image in [1, 2, 3]">
-                <div x-show="slide === (image - 1)" class="absolute w-full">
-                    <img :src="'/public/foto' + image + '.jpg'" alt="Slide {{ image }}" class="w-full h-64 object-cover">
-                </div>
-            </template>
+    <!-- Tombol Hamburger untuk Tampilan Seluler -->
+    <div class="block lg:hidden">
+      <button id="hamburger-btn" class="text-gray-500 hover:text-gray-700 focus:outline-none">
+          <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+      </button>
+  </div>
 
-            <!-- Previous Button -->
-            <button @click="slide = (slide - 1 + 3) % 3" class="absolute left-0 top-1/2 transform -translate-y-1/2 p-4 bg-gray-800 text-white">
-                Previous
-            </button>
 
-            <!-- Next Button -->
-            <button @click="slide = (slide + 1) % 3" class="absolute right-0 top-1/2 transform -translate-y-1/2 p-4 bg-gray-800 text-white">
-                Next
-            </button>
-        </div>
+    <!-- Daftar Navigasi -->
+    <div class="hidden lg:flex space-x-4">
+        <a href="#" class="no-underline hover:text-gray-300">Home</a>
+        <a href="#portfolio" class="no-underline hover:text-gray-300">About</a>
+        <a href="#" class="no-underline hover:text-gray-300">Services</a>
+        <a href="#" class="no-underline hover:text-gray-300">Contact</a>
     </div>
+</nav>
+    
+<!-- Carousel -->
+<div x-data="{ slide: 0 }" x-init="() => { setInterval(() => { slide = (slide + 1) % 3; }, 30000); }">
+  <div class="max-w-screen-lg mx-auto mt-0 relative">
+    <template x-for="image in [1, 2, 3]">
+      <div x-show="slide === (image - 1)" class="relative w-full h-64">
+        <img
+          :src="'/public/foto' + image + '.jpg'"
+          alt="Slide {{ image }}"
+          class="w-full h-64"
+        />
+        <!-- Center the buttons horizontally and position them just above the image -->
+        <div class="absolute left-0 right-0 flex top-20 mt-5">
+          <a class="carousel-control-prev" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true" x-on:click="slide = (slide - 1 + 3) % 3"></span>
+            <!-- <span class="visually-hidden bg-body" x-on:click="slide = (slide - 1 + 3) % 3">Previous</span> -->
+          </a>
+          <a class="carousel-control-next" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true" x-on:click="slide = (slide + 1) % 3"></span>
+            <!-- <span class="visually-hidden bg-body" x-on:click="slide = (slide + 1) % 3">Next</span> -->
+          </a>
+        </div>
+      </div>
+    </template>
+  </div>
+</div>
+<section id="portfolio" class="bg-slate-100 pt-36 pb-16 dark:bg-slate-800">
+  <div class="container bg-slate-100">
+    <div class="w-full px-4">
+      <div class="mx-auto mb-16 max-w-xl text-center">
+        <h4 data-aos="fade-up" class="mb-2 text-lg font-semibold uppercase text-primary">
+          Portfolio
+        </h4>
+        <h2
+          data-aos="fade-up"
+          class="mb-4 text-3xl font-bold text-dark dark:text-white lg:text-4xl"
+        >
+          Project Terbaru
+        </h2>
+        <p data-aos="fade-up" class="text-md font-medium text-secondary">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Minus,
+          repellendus laborum ducimus quidem dignissimos provident.
+        </p>
+      </div>
+    </div>
+    <div
+      class="flex w-full flex-wrap justify-center px-4 xl:mx-auto xl:w-10/12"
+    >
+      <div class="mb-12 p-4 md:w-1/2">
+        <div class="overflow-hidden rounded-lg shadow-md">
+          <img data-aos="fade-up" data-aos-delay="125"
+            src="https://source.unsplash.com/random/640x400/?technology"
+            alt=""
+            class="w-full"
+          />
+        </div>
+        <h3
+          class="mt-5 mb-3 text-xl font-semibold text-dark dark:text-white"
+        >
+          Lorem, ipsum.
+        </h3>
+        <p class="text-base font-medium text-secondary">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non
+          voluptatem optio ut quidem numquam!
+        </p>
+      </div>
+      <div class="mb-12 p-4 md:w-1/2">
+        <div class="overflow-hidden rounded-md shadow-md">
+          <img data-aos="fade-up" data-aos-delay="250"
+            src="https://source.unsplash.com/random/640x400/?mechanical-keyboard"
+            alt=""
+            class="w-full"
+          />
+        </div>
+        <h3
+          class="mt-5 mb-3 text-xl font-semibold text-dark dark:text-white"
+        >
+          Lorem, ipsum.
+        </h3>
+        <p class="text-base font-medium text-secondary">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non
+          voluptatem optio ut quidem numquam!
+        </p>
+      </div>
+      <div class="mb-12 p-4 md:w-1/2">
+        <div class="overflow-hidden rounded-md shadow-md">
+          <img data-aos="fade-up" data-aos-delay="375"
+            src="https://source.unsplash.com/random/640x400/?video-game"
+            alt=""
+            class="w-full"
+          />
+        </div>
+        <h3
+          class="mt-5 mb-3 text-xl font-semibold text-dark dark:text-white"
+        >
+          Lorem, ipsum.
+        </h3>
+        <p class="text-base font-medium text-secondary">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non
+          voluptatem optio ut quidem numquam!
+        </p>
+      </div>
+      <div class="mb-12 p-4 md:w-1/2">
+        <div class="overflow-hidden rounded-md shadow-md">
+          <img data-aos="fade-up" data-aos-delay="500"
+            src="https://source.unsplash.com/random/640x400/?abstract"
+            alt=""
+            class="w-full"
+          />
+        </div>
+        <h3
+          class="mt-5 mb-3 text-xl font-semibold text-dark dark:text-white"
+        >
+          Lorem, ipsum.
+        </h3>
+        <p class="text-base font-medium text-secondary">
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Non
+          voluptatem optio ut quidem numquam!
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
 
     <!-- Include the Tailwind CSS and Alpine.js files -->
     <script src="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.min.js" defer></script>
 
-<!-- Script for the sticky navbar and autoscroll -->
-<script>
-    window.addEventListener('scroll', function () {
-        var navbar = document.querySelector('.navbar');
-        navbar.classList.toggle('bg-gray-800', window.scrollY > 0);
-    });
+    <!-- Script for the sticky navbar and autoscroll -->
+    <script>
+        // document.addEventListener("DOMContentLoaded", function () {
+        // var hamburgerBtn = document.getElementById('hamburger-btn');
+        // var navMenu = document.querySelector('.lg\\:flex'); // Selector untuk menu pada tampilan seluler
+        // });
+        // hamburgerBtn.addEventListener('click', function () {
+        //  navMenu.classList.toggle('hidden'); // Toggle class hidden pada menu
+        // });
+        
+      window.addEventListener("scroll", function () {
+          var navbar = document.querySelector(".sticky");
+          var h = document.querySelector(".sticky")
+          var logo = document.querySelector("#logo");
+          var isScrolled = window.scrollY > 0;
+  
+          // Toggle "text-white" class for the logo
+          logo.classList.toggle("text-white", isScrolled);
+  
+          // Toggle "bg-gray-800" class for the navbar
+          navbar.classList.toggle("bg-gray-800", isScrolled)
 
-    Alpine.data['x-data'].$watch('slide', function (value) {
-        // Autoscroll to the next slide after a certain duration (e.g., 3000 milliseconds)
-        setTimeout(function () {
-            value = (value + 1) % 3;
-            Alpine.data['x-data'].slide = value;
-        }, 3000);
-    });
-</script>
-</body>
+      });
+      // Tambahkan smooth scroll untuk tautan di dalam navbar
+  //     document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+  //       anchor.addEventListener('click', function (e) {
+  //         e.preventDefault();
+
+  //     document.querySelector(this.getAttribute('href')).scrollIntoView({
+  //       behavior: 'smooth'
+  //     });
+  //   });
+  // });
+  
+      Alpine.data["x-data"].$watch("slide", function (value) {
+          value = (value + 1) % 3;
+          Alpine.data["x-data"].slide = value;
+      });
+    </script>
+    <script>
+
+    </script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+        <script src="dist/js/script.js"></script>
+  </body>
 </html>
